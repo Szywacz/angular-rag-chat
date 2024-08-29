@@ -8,10 +8,9 @@ describe('FilesListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FilesListComponent]
-    })
-    .compileComponents();
-    
+      imports: [FilesListComponent],
+    }).compileComponents();
+
     fixture = TestBed.createComponent(FilesListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

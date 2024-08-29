@@ -8,10 +8,9 @@ describe('FileEditComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FileEditComponent]
-    })
-    .compileComponents();
-    
+      imports: [FileEditComponent],
+    }).compileComponents();
+
     fixture = TestBed.createComponent(FileEditComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

@@ -3,10 +3,10 @@
   <mat-form-field appearance="fill">
     <mat-label>Account name:</mat-label>
     <input matInput formControlName="accountName" type="text" />
-    @if (registerForm.controls.accountName.touched && registerForm.controls.accountName.hasError("required")) {
+    @if (registerForm.controls.accountName.touched && registerForm.controls.accountName.hasError('required')) {
       <mat-error>Account name is required.</mat-error>
     }
-    @if (registerForm.controls.accountName.touched && registerForm.controls.accountName.hasError("minlength")) {
+    @if (registerForm.controls.accountName.touched && registerForm.controls.accountName.hasError('minlength')) {
       <mat-error>Account name must be at least 7 characters long.</mat-error>
     }
   </mat-form-field>
@@ -14,10 +14,10 @@
   <mat-form-field appearance="fill">
     <mat-label>Password</mat-label>
     <input matInput formControlName="password" type="password" />
-    @if (registerForm.controls.password.touched && registerForm.controls.password.hasError("required")) {
+    @if (registerForm.controls.password.touched && registerForm.controls.password.hasError('required')) {
       <mat-error>Password is required.</mat-error>
     }
-    @if (registerForm.controls.password.touched && registerForm.controls.password.hasError("minlength")) {
+    @if (registerForm.controls.password.touched && registerForm.controls.password.hasError('minlength')) {
       <mat-error>Password must be at least 7 characters long.</mat-error>
     }
   </mat-form-field>
@@ -25,7 +25,7 @@
   <mat-form-field appearance="fill">
     <mat-label>Confirm Password</mat-label>
     <input matInput formControlName="confirmPassword" type="password" />
-    @if (registerForm.controls.confirmPassword.touched && registerForm.controls.confirmPassword.hasError("matching")) {
+    @if (registerForm.controls.confirmPassword.touched && registerForm.controls.confirmPassword.hasError('matching')) {
       <mat-error>Passwords must match.</mat-error>
     }
   </mat-form-field>

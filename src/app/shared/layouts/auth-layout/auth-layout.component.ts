@@ -1,12 +1,12 @@
-import { Component } from "@angular/core";
-import { RouterModule } from "@angular/router";
-import { MatCardModule } from "@angular/material/card";
+import { Component } from '@angular/core';
+import { RouterModule } from '@angular/router';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
-  selector: "app-auth-layout",
+  selector: 'app-auth-layout',
   standalone: true,
   imports: [RouterModule, MatCardModule],
-  templateUrl: "./auth-layout.component.html",
-  styleUrl: "./auth-layout.component.scss",
+  templateUrl: './auth-layout.component.html',
+  styleUrl: './auth-layout.component.scss',
 })
 export class AuthLayoutComponent {}
