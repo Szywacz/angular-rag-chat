@@ -14,6 +14,8 @@ import { RouterLink } from '@angular/router';
   styleUrl: './login.component.scss',
 })
 export class LoginComponent {
+
+  // TODO: Wrong credentials error on not found in db. 
   accountFound = false;
 
   constructor(private fb: FormBuilder) {}

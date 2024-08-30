@@ -5,6 +5,6 @@ import { Component } from '@angular/core';
   standalone: true,
   imports: [],
   templateUrl: './file-edit.component.html',
-  styleUrl: './file-edit.component.scss',
+  styleUrl: './file-edit.component.scss'
 })
 export class FileEditComponent {}
