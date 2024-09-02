@@ -1,1 +1,13 @@
-<p>breadcrumbs works!</p>
+<nav aria-label="breadcrumbs">
+  <ul class="breadcrumbs">
+    <li class="breadcrumbs-item">
+      <a [routerLink]="['/']" class="link">Home</a>
+    </li>
+    @for (item of navItems; track item; let idx = $index) {
+      <mat-icon class="chevron">chevron_right</mat-icon>
+      <li class="breadcrumbs-item">
+        <a [routerLink]="'/' + [concatenatePreviousRoutes(idx)]">{{ item }}</a>
+      </li>
+    }
+  </ul>
+</nav>
