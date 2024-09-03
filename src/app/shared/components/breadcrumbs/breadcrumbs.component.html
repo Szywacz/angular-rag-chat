@@ -3,10 +3,10 @@
     <li class="breadcrumbs-item">
       <a [routerLink]="['/']" class="link">Home</a>
     </li>
-    @for (item of navItems; track item; let idx = $index) {
+    @for (item of breadcrumbs; track item; let idx = $index) {
       <mat-icon class="chevron">chevron_right</mat-icon>
       <li class="breadcrumbs-item">
-        <a [routerLink]="'/' + [concatenatePreviousRoutes(idx)]">{{ item }}</a>
+        <a [routerLink]="item.url">{{ item.label }}</a>
       </li>
     }
   </ul>
