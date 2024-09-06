@@ -22,6 +22,8 @@
     "lib": ["ES2022", "dom"],
     "paths": {
       "@components/*": ["./src/app/shared/components/*"],
+      "@services/*": ["./src/app/shared/services/*"],
+      "@layouts/*": ["./src/app/shared/layouts/*"],
       "@/*": ["./src/*"]
     }
   },

@@ -8,6 +8,7 @@ export const AUTH_ROUTES: Route[] = [
   {
     path: '',
     component: AuthLayoutComponent,
+    canActivate: [LoggedInGuard],
     children: [
       {
         path: '',
@@ -17,7 +18,6 @@ export const AUTH_ROUTES: Route[] = [
       {
         path: 'login',
         component: LoginComponent,
-        canActivate: [LoggedInGuard],
       },
       {
         path: 'register',

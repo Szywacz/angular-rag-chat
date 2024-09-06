@@ -7,7 +7,7 @@ export const LoggedInGuard: CanActivateFn = () => {
   const router = inject(Router);
 
   if (tokenService.authenticated()) {
-    return router.createUrlTree(['/files']);
+    return router.createUrlTree(['/']);
   }
 
   return true;
