@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { ErrorComponent } from './shared/layouts/error/error.component';
+import { AuthGuard } from './shared/guards/auth.guard';
 
 const commonRedirects: Routes = [
   {
@@ -18,12 +19,13 @@ export const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: '/auth/login',
+    redirectTo: '/files',
   },
   ...commonRedirects,
   {
     path: 'files',
     loadChildren: () => import('./files-manager/files.routes').then((r) => r.FILES_ROUTES),
+    canActivate: [AuthGuard],
   },
   {
     path: 'auth',

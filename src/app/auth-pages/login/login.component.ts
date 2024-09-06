@@ -1,10 +1,11 @@
+import TokenService from '@/app/shared/services/token.service';
 import { Component } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -18,7 +19,7 @@ export class LoginComponent {
   // TODO: Wrong credentials error on not found in db. 
   accountFound = false;
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder, private tokenService: TokenService, private router: Router) {}
 
   loginForm = this.fb.group({
     accountName: ['', [Validators.required]],
@@ -27,5 +28,10 @@ export class LoginComponent {
 
   onSubmit() {
     console.log(this.loginForm.value);
+  }
+
+  onLogin() {
+    this.tokenService.setToken('mock_token');
+    this.router.navigate(['/files']);
   }
 }
