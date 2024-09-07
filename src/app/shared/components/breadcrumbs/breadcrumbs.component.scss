@@ -16,5 +16,9 @@
         color: $accent-500;
       }
     }
+    span {
+      color: $color-gray-900;
+      text-decoration: underline;
+    }
   }
 }

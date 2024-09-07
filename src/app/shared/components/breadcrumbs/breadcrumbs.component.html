@@ -3,11 +3,17 @@
     <li class="breadcrumbs-item">
       <a [routerLink]="['/']" class="link">Home</a>
     </li>
-    @for (item of breadcrumbs; track item; let idx = $index) {
+    @for (item of breadcrumbs; track item; let idx = $index; let last = $last) {
       <mat-icon class="chevron">chevron_right</mat-icon>
-      <li class="breadcrumbs-item">
-        <a [routerLink]="item.url">{{ item.label }}</a>
-      </li>
+      @if (last) {
+        <li class="breadcrumbs-item">
+          <span>{{ item.label }}</span>
+        </li>
+      } @else {
+        <li class="breadcrumbs-item">
+          <a [routerLink]="item.url">{{ item.label }}</a>
+        </li>
+      }
     }
   </ul>
 </nav>

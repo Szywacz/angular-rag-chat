@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute, NavigationEnd, Router, RouterLink } from '@angular/router';
 import { filter } from 'rxjs';
@@ -17,6 +17,13 @@ interface Breadcrumb {
   encapsulation: ViewEncapsulation.None,
 })
 export class BreadcrumbsComponent implements OnInit {
+  /**
+   * Pass custom last label whenever path ends with :id, otherwise last label will be the id.
+   * f.e.
+   * @example <app-breadcrumbs [customLastLabel]="object.name"></app-breadcrumbs>
+   */
+  @Input() customLastLabel: string | null = null;
+
   breadcrumbs: Breadcrumb[] = [];
 
   navItems: string[] = this.router.url.slice(1).split('/');
@@ -41,13 +48,24 @@ export class BreadcrumbsComponent implements OnInit {
     while (route) {
       if (route.routeConfig && route.routeConfig.path && route.routeConfig.path !== '') {
         const path: string = route.routeConfig.path;
-        const label = decodeURIComponent(path).toUpperCase();
+        let label = '';
+
+        if (path.endsWith(':id')) {
+          const urlSegment = this.router.url.split('/').pop() || '';
+          label = urlSegment.toUpperCase();
+        } else {
+          label = decodeURIComponent(path).toUpperCase();
+        }
         url += `/${path}`;
 
         this.breadcrumbs.push({ label, url });
       }
 
       route = route.firstChild;
+    }
+
+    if (this.customLastLabel) {
+      this.breadcrumbs[this.breadcrumbs.length - 1].label = this.customLastLabel;
     }
   }
 }
