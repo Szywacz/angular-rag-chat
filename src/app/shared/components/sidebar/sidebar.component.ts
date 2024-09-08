@@ -1,10 +1,23 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { MatListModule } from '@angular/material/list';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-sidebar',
-  standalone: true,
-  imports: [],
   templateUrl: './sidebar.component.html',
-  styleUrl: './sidebar.component.scss',
+  styleUrls: ['./sidebar.component.scss'],
+  standalone: true,
+  imports: [CommonModule, RouterModule, MatListModule, MatIconModule],
 })
-export class SidebarComponent {}
+export class SidebarComponent implements OnInit {
+  hasAdminPrivileges: boolean = false;
+
+  constructor() {}
+
+  ngOnInit() {
+    // TODO: get user privileges from backend
+    this.hasAdminPrivileges = true;
+  }
+}

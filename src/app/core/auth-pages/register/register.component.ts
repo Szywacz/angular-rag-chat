@@ -4,7 +4,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { RouterLink } from '@angular/router';
-import CustomValidators from '../../shared/utils/custom-validators';
+import CustomValidators from '@shared/utils/custom-validators';
 
 @Component({
   selector: 'app-register',
@@ -18,9 +18,9 @@ export class RegisterComponent {
 
   registerForm = this.fb.group(
     {
-      accountName: ['', [Validators.required, Validators.minLength(7)]],
-      password: ['', [Validators.required, Validators.minLength(7)]],
-      confirmPassword: ['', [Validators.required]],
+      accountName: ['', [Validators.required, Validators.minLength(7), Validators.maxLength(32)]],
+      password: ['', [Validators.required, Validators.minLength(7), Validators.maxLength(64)]],
+      confirmPassword: ['', [Validators.required, Validators.minLength(7), Validators.maxLength(64)]],
     },
     {
       validators: [CustomValidators.matching('password', 'confirmPassword')],

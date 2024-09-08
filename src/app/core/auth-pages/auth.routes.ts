@@ -1,8 +1,8 @@
 import { Route } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
-import { AuthLayoutComponent } from '../shared/layouts/auth-layout/auth-layout.component';
-import { LoggedInGuard } from '../shared/guards/loggedIn.guard';
+import { AuthLayoutComponent } from '@shared/layouts/auth-layout/auth-layout.component';
+import { LoggedInGuard } from '@shared/guards/loggedIn.guard';
 
 export const AUTH_ROUTES: Route[] = [
   {

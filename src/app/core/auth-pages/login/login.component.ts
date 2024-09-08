@@ -22,8 +22,8 @@ export class LoginComponent {
   constructor(private fb: FormBuilder, private tokenService: TokenService, private router: Router) {}
 
   loginForm = this.fb.group({
-    accountName: ['', [Validators.required]],
-    password: ['', [Validators.required]],
+    accountName: ['', [Validators.required, Validators.maxLength(32)]],
+    password: ['', [Validators.required, Validators.maxLength(64)]],
   });
 
   onSubmit() {
