@@ -1,1 +1,47 @@
-<p>home works!</p>
+<div class="home-container">
+  <h1>Welcome to our RAG Chat System - File Manager and RAG Chat AI</h1>
+
+  <p>
+    Our system combines a file manager with an advanced AI chat using RAG (Retrieval-Augmented Generation) technology
+    based on the content of the documents in the file manager.
+  </p>
+
+  <div class="card-container">
+    <mat-card class="feature-card">
+      <mat-card-header>
+        <mat-card-title>The file manager allows you to:</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <ul>
+          <li>Upload documents</li>
+          <li>Manage file structure</li>
+          <li>Easily access document contents</li>
+        </ul>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-raised-button color="primary" routerLink="/files">Go to File Manager</button>
+      </mat-card-actions>
+    </mat-card>
+
+    <mat-card class="feature-card">
+      <mat-card-header>
+        <mat-card-title>The AI chat with RAG technology enables:</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <ul>
+          <li>Intelligent responses based on your document content</li>
+          <li>Precise information retrieval from files</li>
+          <li>Generation of context-aware answers</li>
+        </ul>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-raised-button color="accent" routerLink="/chat">Start AI Chat</button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+
+  <p>
+    By integrating these two systems, you can efficiently manage your documents and obtain intelligent responses based
+    on their content.
+  </p>
+</div>

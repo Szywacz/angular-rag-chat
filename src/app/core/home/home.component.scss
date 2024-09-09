@@ -1,0 +1,29 @@
+.home-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.card-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.feature-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.feature-card mat-card-content {
+  flex-grow: 1;
+}
+
+@media (max-width: 768px) {
+  .card-container {
+    flex-direction: column;
+  }
+}
