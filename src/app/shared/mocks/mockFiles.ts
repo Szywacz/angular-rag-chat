@@ -1,4 +1,3 @@
-import { of } from 'rxjs';
 import File from '../types/File';
 
 const MOCK_FILES: File[] = [
@@ -44,4 +43,4 @@ const MOCK_FILES: File[] = [
   },
 ];
 
-export default of(MOCK_FILES);
+export default MOCK_FILES;

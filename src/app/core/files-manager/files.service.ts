@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
+import mockFiles from '@shared/mocks/mockFiles';
+import File from '@shared/types/File';
 
 @Injectable({
   providedIn: 'root',
@@ -10,12 +12,16 @@ export class FileService {
 
   constructor(private http: HttpClient) {}
 
-  getFiles(): Observable<any> {
-    return this.http.get(this.apiUrl);
+  getFiles(): Observable<File[]> {
+    // return this.http.get(this.apiUrl);
+    return of(mockFiles);
   }
 
-  getFile(id: string): Observable<any> {
-    return this.http.get(`${this.apiUrl}/${id}`);
+  getFile(id: string): Observable<File> {
+    // return this.http.get(`${this.apiUrl}/${id}`);
+    const mockId = Number.parseInt(id) - 1;
+    const file: File = mockFiles[mockId]
+    return of(file);
   }
 
   createFile(name: string, description: string, content: string): Observable<any> {

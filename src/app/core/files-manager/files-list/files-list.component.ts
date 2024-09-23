@@ -9,7 +9,7 @@ import { RouterLink } from '@angular/router';
 import File from '@shared/types/File';
 import MOCK_FILES from '@shared/mocks/mockFiles';
 import { MatInputModule } from '@angular/material/input';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
@@ -33,7 +33,7 @@ export class FilesListComponent implements OnInit {
   displayedColumns: string[] = ['id', 'name', 'description', 'createdAt', 'updatedAt', 'actions'];
   dataSource = new MatTableDataSource<File>();
 
-  filesObservable: Observable<File[]> = MOCK_FILES;
+  filesObservable: Observable<File[]> = of(MOCK_FILES);
 
   files = toSignal<File[], File[]>(this.filesObservable, { initialValue: [] });
 
