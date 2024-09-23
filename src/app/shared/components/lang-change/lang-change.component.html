@@ -1,0 +1,11 @@
+<label>
+  <select #langSelect (change)="translate.use(langSelect.value)">
+    @for (lang of translate.getLangs(); track $index) {
+      <option [value]="lang" [selected]="lang">
+        {{ lang }}
+      </option>
+    } @empty {
+      <option>No languages found</option>
+    }
+  </select>
+</label>

@@ -1,0 +1,21 @@
+{
+  "homeComponent": {
+    "mainHeader": "Welcome to our RAG Chat System - File Manager and RAG Chat AI",
+    "systemDescription": "Our system combines a file manager with an advanced AI chat using RAG (Retrieval-Augmented Generation) technology based on the content of the documents in the file manager.",
+    "filesManagerTitle": "The file manager allows you to:",
+    "filesManagerBulletList": {
+      "0": "Upload documents",
+      "1": "Manage file structure",
+      "2": "Easily access document contents"
+    },
+    "filesManagerButton": "Go to File Manager",
+    "aiChatTitle": "The AI chat with RAG technology enables:",
+    "aiChatBulletList": {
+      "0": "Intelligent responses based on your document content",
+      "1": "Precise information retrieval from files",
+      "2": "Generation of context-aware answers"
+    },
+    "aiChatButton": "Start AI Chat",
+    "summary": "By integrating these two systems, you can efficiently manage your documents and obtain intelligent responses based on their content."
+  }
+}

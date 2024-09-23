@@ -1,0 +1,21 @@
+{
+  "homeComponent": {
+    "mainHeader": "Witamy w naszym systemie RAG Chat - Menedżer plików i Czat AI z RAG",
+    "systemDescription": "Nasz system łączy menedżer plików z zaawansowanym czatem AI wykorzystującym technologię RAG (Retrieval-Augmented Generation), bazującą na zawartości dokumentów w menedżerze plików.",
+    "filesManagerDescriptionTitle": "Menedżer plików pozwala na:",
+    "filesManagerDescriptionBulletList": {
+      "0": "Przesyłanie dokumentów",
+      "1": "Zarządzanie strukturą plików",
+      "2": "Łatwy dostęp do zawartości dokumentów"
+    },
+    "filesManagerButton": "Przejdź do Menedżera plików",
+    "aiChatTitle": "Czat AI z technologią RAG umożliwia:",
+    "aiChatBulletList": {
+      "0": "Inteligentne odpowiedzi oparte na zawartości Twoich dokumentów",
+      "1": "Precyzyjne wyszukiwanie informacji z plików",
+      "2": "Generowanie odpowiedzi uwzględniających kontekst"
+    },
+    "aiChatButton": "Rozpocznij czat z AI",
+    "summary": "Dzięki integracji tych dwóch systemów możesz efektywnie zarządzać swoimi dokumentami i uzyskiwać inteligentne odpowiedzi oparte na ich zawartości."
+  }
+}
