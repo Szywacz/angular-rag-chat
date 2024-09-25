@@ -10,6 +10,14 @@ export default class TokenService {
     return true;
   }
 
+  isEditor(): boolean {
+    return true;
+  }
+
+  isAdmin(): boolean {
+    return false;
+  }
+
   getToken(): string | null {
     return this.token;
   }

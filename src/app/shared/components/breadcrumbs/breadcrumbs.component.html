@@ -1,11 +1,10 @@
 <nav aria-label="breadcrumbs">
   <ul class="breadcrumbs">
-    <li class="breadcrumbs-item">
-      <a [routerLink]="['/']" class="link">Home</a>
-    </li>
-    @for (item of breadcrumbs; track item; let idx = $index; let last = $last) {
-      <mat-icon class="chevron">chevron_right</mat-icon>
-      @if (last) {
+    @for (item of breadcrumbs; track item; let idx = $index) {
+      @if (!$first) {
+        <mat-icon class="chevron">chevron_right</mat-icon>
+      }
+      @if ($last) {
         <li class="breadcrumbs-item">
           <span>{{ item.label }}</span>
         </li>

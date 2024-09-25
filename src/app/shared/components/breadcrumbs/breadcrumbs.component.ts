@@ -1,9 +1,9 @@
-import { Component, DestroyRef, inject, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, DestroyRef, inject, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
-import { ActivatedRoute, NavigationEnd, Router, RouterLink } from '@angular/router';
-import { filter, tap } from 'rxjs';
+import { ActivatedRoute, NavigationEnd, NavigationStart, Router, RouterLink } from '@angular/router';
+import { filter, Subscription } from 'rxjs';
 import { BreadcrumbsService } from './breadcrumbs.service';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { CommonModule } from '@angular/common';
 
 interface Breadcrumb {
   label: string;
@@ -33,15 +33,17 @@ interface Breadcrumb {
 @Component({
   selector: 'app-breadcrumbs',
   standalone: true,
-  imports: [MatIconModule, RouterLink],
+  imports: [MatIconModule, RouterLink, CommonModule],
   templateUrl: './breadcrumbs.component.html',
   styleUrl: './breadcrumbs.component.scss',
   encapsulation: ViewEncapsulation.None,
 })
-export class BreadcrumbsComponent implements OnInit {
+export class BreadcrumbsComponent implements OnInit, OnDestroy {
   breadcrumbs: Breadcrumb[] = [];
   navItems: string[] = this.router.url.slice(1).split('/');
   destroyRef = inject(DestroyRef);
+  navStartSub?: Subscription;
+  navEndSub?: Subscription;
 
   constructor(
     private router: Router,
@@ -50,20 +52,12 @@ export class BreadcrumbsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.router.events.pipe(filter((event) => event instanceof NavigationEnd)).subscribe(() => {
+    this.navStartSub = this.router.events.pipe(filter((event) => event instanceof NavigationStart)).subscribe(() => {
+      this.breadcrumbsService.resetCustomLabel();
+    });
+    this.navEndSub = this.router.events.pipe(filter((event) => event instanceof NavigationEnd)).subscribe(() => {
       this.generateBreadcrumbs();
     });
-
-    this.breadcrumbsService.customLastLabel$.pipe(
-      takeUntilDestroyed(this.destroyRef),
-      tap((label) => {
-        if (this.breadcrumbs.length > 0) {
-          this.breadcrumbs[this.breadcrumbs.length - 1].label =
-            label || this.breadcrumbs[this.breadcrumbs.length - 1].label;
-        }
-      }),
-    );
-
     this.generateBreadcrumbs();
   }
 
@@ -71,12 +65,12 @@ export class BreadcrumbsComponent implements OnInit {
     let route = this.activatedRoute.root ? this.activatedRoute.root : null;
     let url = '';
     this.breadcrumbs = [];
+    this.breadcrumbs.push({ label: 'HOME', url: '/' });
 
     while (route) {
-      if (route.routeConfig && route.routeConfig.path && route.routeConfig.path !== '') {
+      if (route.routeConfig && route.routeConfig.path && route.routeConfig.path.length > 0) {
         const path: string = route.routeConfig.path;
         let label = '';
-
         if (path.endsWith(':id')) {
           const urlSegment = this.router.url.split('/').pop() || '';
           label = urlSegment.toUpperCase();
@@ -90,12 +84,13 @@ export class BreadcrumbsComponent implements OnInit {
 
       route = route.firstChild;
     }
+    this.breadcrumbsService.customLastLabel$.subscribe((label) => {
+      label && this.breadcrumbs.length > 0 ? (this.breadcrumbs[this.breadcrumbs.length - 1].label = label) : null;
+    });
+  }
 
-    if (this.breadcrumbsService.customLastLabel$) {
-      this.breadcrumbsService.customLastLabel$.pipe(
-        takeUntilDestroyed(this.destroyRef),
-        tap((label) => (label ? (this.breadcrumbs[this.breadcrumbs.length - 1].label = label) : null)),
-      );
-    }
+  ngOnDestroy(): void {
+    this.navStartSub?.unsubscribe();
+    this.navEndSub?.unsubscribe();
   }
 }

@@ -11,4 +11,8 @@ export class BreadcrumbsService {
   setCustomLastLabel(label: string | null): void {
     this.customLastLabelSubject.next(label);
   }
+
+  resetCustomLabel() {
+    this.customLastLabelSubject.next(null);
+  }
 }

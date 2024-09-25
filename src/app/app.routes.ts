@@ -5,6 +5,8 @@ import { DashboardComponent } from '@layouts/dashboard/dashboard.component';
 import { HomeComponent } from './core/home/home.component';
 import { ChatComponent } from './core/chat/chat.component';
 import { AdminComponent } from './core/admin/admin.component';
+import { FilesGuard } from '@shared/guards/files.guard';
+import { UnauthorizedComponent } from '@core/unauthorized/unauthorized.component';
 
 const commonRedirects: Routes = [
   {
@@ -31,6 +33,7 @@ export const routes: Routes = [
       },
       {
         path: 'files',
+        canActivate: [FilesGuard],
         loadChildren: () => import('./core/files-manager/files.routes').then((r) => r.FILES_ROUTES),
       },
       {
@@ -47,6 +50,10 @@ export const routes: Routes = [
   {
     path: 'auth',
     loadChildren: () => import('./core/auth-pages/auth.routes').then((r) => r.AUTH_ROUTES),
+  },
+  {
+    path: 'unauthorized',
+    component: UnauthorizedComponent,
   },
   {
     path: '**',

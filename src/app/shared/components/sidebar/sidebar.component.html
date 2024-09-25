@@ -1,9 +1,11 @@
+<app-breadcrumbs></app-breadcrumbs>
+
 <mat-nav-list>
   <a mat-list-item routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
     <mat-icon matListItemIcon>home</mat-icon>
     <span matListItemTitle>Home</span>
   </a>
-  <a mat-list-item routerLink="/files" routerLinkActive="active">
+  <a mat-list-item routerLink="/files" routerLinkActive="active" *ngIf="hasEditorPrivileges">
     <mat-icon matListItemIcon>folder</mat-icon>
     <span matListItemTitle>Files</span>
   </a>

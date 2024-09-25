@@ -1,3 +1,7 @@
+app-breadcrumbs ::ng-deep nav {
+  margin: 0 15px;
+}
+
 mat-nav-list {
   padding-top: 20px;
 
@@ -8,5 +12,9 @@ mat-nav-list {
     mat-icon {
       margin-right: 10px;
     }
+  }
+
+  .not-displayed {
+    display: none;
   }
 }
