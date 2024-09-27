@@ -26,6 +26,7 @@
       "@layouts/*": ["./src/app/shared/layouts/*"],
       "@core/*": ["./src/app/core/*"],
       "@shared/*": ["./src/app/shared/*"],
+      "@environments/*": ["./src/environments"],
       "@/*": ["./src/*"]
     }
   },

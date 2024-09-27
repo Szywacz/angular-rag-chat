@@ -1,10 +1,10 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router, UrlTree } from '@angular/router';
-import TokenService from '../services/token.service';
+import AuthService from '@services/auth.service';
 
 export const FilesGuard: CanActivateFn = (): boolean | UrlTree => {
-  const tokenService = inject(TokenService);
-  return tokenService.authenticated() && (tokenService.isEditor() || tokenService.isAdmin())
+  const authService = inject(AuthService);
+  return authService.authenticated() && (authService.isEditor() || authService.isAdmin())
     ? true
     : inject(Router).createUrlTree(['/unauthorized']);
 };

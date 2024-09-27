@@ -1,12 +1,12 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
-import TokenService from '../services/token.service';
+import AuthService from '@services/auth.service';
 
 export const LoggedInGuard: CanActivateFn = () => {
-  const tokenService = inject(TokenService);
+  const authService = inject(AuthService);
   const router = inject(Router);
 
-  if (tokenService.authenticated()) {
+  if (authService.authenticated()) {
     return router.createUrlTree(['/']);
   }
 

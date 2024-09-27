@@ -15,7 +15,7 @@
     <a [routerLink]="['/auth/register']" routerLinkActive="router-link-active">Register</a>
   </p>
   <button mat-raised-button color="primary" type="submit">Login</button>
-  @if (!accountFound) {
-    <mat-error>Couldn't find account with matching credentials.</mat-error>
+  @if (errorMessage) {
+    <mat-error>{{ this.errorMessage }}</mat-error>
   }
 </form>
