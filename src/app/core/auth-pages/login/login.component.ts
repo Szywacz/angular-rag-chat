@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -6,7 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { Router, RouterLink } from '@angular/router';
 import AuthService from '@services/auth.service';
-import { finalize, tap } from 'rxjs';
+import { finalize, shareReplay, Subscription, tap } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -15,13 +15,14 @@ import { finalize, tap } from 'rxjs';
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })
-export class LoginComponent {
+export class LoginComponent implements OnDestroy {
   errorMessage = '';
   isLoading = false;
+  authSub?: Subscription;
 
   constructor(
     private fb: FormBuilder,
-    private auth: AuthService,
+    private authService: AuthService,
     private router: Router,
   ) {}
 
@@ -43,13 +44,14 @@ export class LoginComponent {
     this.isLoading = true;
     this.errorMessage = '';
 
-    this.auth
+    this.authSub = this.authService
       .login(username, password)
       .pipe(
         tap((response) => {
-          this.auth.setCredentials(response);
-          this.router.navigate(['/files']);
+          this.authService.setCredentials(response);
+          this.router.navigate(['/']);
         }),
+        shareReplay(),
         finalize(() => {
           this.isLoading = false;
         }),
@@ -60,5 +62,9 @@ export class LoginComponent {
           this.errorMessage = 'Login failed. Please check your credentials and try again.';
         },
       });
+  }
+
+  ngOnDestroy(): void {
+    this.authSub?.unsubscribe();
   }
 }

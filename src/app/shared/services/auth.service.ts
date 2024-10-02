@@ -15,7 +15,6 @@ export interface AuthPayload {
 export default class AuthService {
   private readonly authApiUrl = '/api/auth';
   currentUserSignal: WritableSignal<User | undefined | null> = signal<User | undefined | null>(undefined);
-  isLoadingSignal: WritableSignal<boolean> = signal<boolean>(true);
 
   constructor(
     private http: HttpClient,
@@ -53,13 +52,13 @@ export default class AuthService {
   register(accountName: string, password: string): Observable<AuthPayload> {
     return this.http.post<AuthPayload>(`${this.authApiUrl}/register`, { accountName, password }).pipe(
       tap((response) => {
-        this.tokenService.setTokens(response.accessToken, response.refreshToken);
+        this.tokenService.setTokens(response.accessToken);
       }),
     );
   }
 
   setCredentials(response: AuthPayload) {
-    this.tokenService.setTokens(response.accessToken, response.refreshToken);
+    this.tokenService.setTokens(response.accessToken);
     const user = this.tokenService.getUser();
     this.currentUserSignal.set(user);
   }

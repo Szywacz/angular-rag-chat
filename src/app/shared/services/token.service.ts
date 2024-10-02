@@ -19,9 +19,8 @@ export interface TokenPayload {
 export default class TokenService {
   private readonly authApiUrl = '/auth';
 
-  private readonly accessTokenKey = 'access_token';
-  private readonly refreshTokenKey = 'refresh_token';
-  private decodedToken: TokenPayload | null = null;
+  private readonly accessTokenKey = 'accessToken';
+  private readonly refreshTokenKey = 'refreshToken';
 
   constructor(
     private http: HttpClient,
@@ -64,9 +63,9 @@ export default class TokenService {
     return this.getCookie(this.refreshTokenKey);
   }
 
-  setTokens(accessToken: string, refreshToken: string): void {
+  setTokens(accessToken: string): void {
+    this.removeTokens();
     this.setCookie(this.accessTokenKey, accessToken);
-    this.setCookie(this.refreshTokenKey, refreshToken);
   }
 
   removeTokens(): void {
@@ -78,42 +77,38 @@ export default class TokenService {
     const refreshToken = this.getRefreshToken();
     return this.http.post<AuthPayload>(`${this.authApiUrl}/refresh-token`, { refreshToken: refreshToken }).pipe(
       tap((response) => {
-        this.setTokens(response.accessToken, response.refreshToken);
+        this.setTokens(response.accessToken);
       }),
     );
   }
 
-  private decodeToken(token: string): void {
+  private decodeToken(token: string): TokenPayload | null {
     try {
       if (token === 'undefined') {
-        this.decodedToken = null;
         throw Error('token is undefined');
       }
       const payload = JSON.parse(atob(token.split('.')[1]));
-      this.decodedToken = payload as TokenPayload;
+      return payload as TokenPayload;
     } catch (error) {
       console.error('Error decoding token:', error);
-      this.decodedToken = null;
+      return null;
     }
   }
 
   isTokenExpired(): boolean {
-    const decodedToken = this.getDecodedToken();
+    const decodedToken = this.getDecodedAccessToken();
     if (!decodedToken) return true;
     const expirationTime = decodedToken.exp;
     const currentTime = Math.floor(Date.now() / 1000);
     return currentTime >= expirationTime;
   }
 
-  getDecodedToken(): TokenPayload | null {
-    if (!this.decodedToken && this.getAccessToken()) {
-      this.decodeToken(this.getAccessToken()!);
-    }
-    return this.decodedToken;
+  getDecodedAccessToken(): TokenPayload | null {
+    return this.getAccessToken() ? this.decodeToken(this.getAccessToken()!) : null;
   }
 
   getUser(): User | null {
-    const decodedToken = this.getDecodedToken();
+    const decodedToken = this.getDecodedAccessToken();
 
     if (decodedToken?.accountName && decodedToken?.role !== undefined && !this.isTokenExpired()) {
       const accountName: string = decodedToken.accountName;
@@ -126,10 +121,10 @@ export default class TokenService {
   }
 
   getUserRole(): string | null {
-    return this.getDecodedToken()?.role || null;
+    return this.getDecodedAccessToken()?.role || null;
   }
 
   getAccountName(): string | null {
-    return this.getDecodedToken()?.accountName || null;
+    return this.getDecodedAccessToken()?.accountName || null;
   }
 }
