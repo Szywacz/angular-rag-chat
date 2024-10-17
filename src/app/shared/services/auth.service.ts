@@ -1,12 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, signal, WritableSignal } from '@angular/core';
 import User from '@shared/types/User';
-import { Observable, tap } from 'rxjs';
+import { catchError, Observable, of, tap } from 'rxjs';
 import TokenService from './token.service';
 
 export interface AuthPayload {
   accessToken: string;
-  refreshToken: string;
 }
 
 @Injectable({
@@ -33,7 +32,7 @@ export default class AuthService {
   }
 
   authenticated(): boolean {
-    return !this.tokenService.isTokenExpired() && !!this.tokenService.getAccessToken() && !!this.currentUserSignal();
+    return !!this.tokenService.getAccessToken() && !!this.currentUserSignal();
   }
 
   isEditor(): boolean {
@@ -52,14 +51,34 @@ export default class AuthService {
   register(accountName: string, password: string): Observable<AuthPayload> {
     return this.http.post<AuthPayload>(`${this.authApiUrl}/register`, { accountName, password }).pipe(
       tap((response) => {
-        this.tokenService.setTokens(response.accessToken);
+        this.tokenService.setAccessToken(response.accessToken);
+      }),
+    );
+  }
+
+  refresh(): Observable<AuthPayload> {
+    return this.http.post<AuthPayload>(`${this.authApiUrl}/refresh`, null);
+  }
+
+  logout(): Observable<{ message: string }> {
+    this.clearAccess();
+
+    return this.http.post<{ message: string }>(`${this.authApiUrl}/logout`, null).pipe(
+      catchError((error) => {
+        console.error('Logout request failed:', error);
+        return of({ message: 'Logged out locally' });
       }),
     );
   }
 
   setCredentials(response: AuthPayload) {
-    this.tokenService.setTokens(response.accessToken);
+    this.tokenService.setAccessToken(response.accessToken);
     const user = this.tokenService.getUser();
     this.currentUserSignal.set(user);
+  }
+
+  clearAccess() {
+    this.tokenService.removeTokens();
+    this.currentUserSignal.set(null);
   }
 }

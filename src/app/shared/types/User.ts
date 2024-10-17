@@ -5,6 +5,7 @@ export enum Role {
 }
 
 export default interface User {
+  userId: string;
   accountName: string;
   role: Role;
 }

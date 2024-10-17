@@ -1,9 +1,6 @@
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
-import { Observable, tap } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
 import User, { Role } from '@shared/types/User';
-import { AuthPayload } from './auth.service';
 
 export interface TokenPayload {
   sub: string;
@@ -17,13 +14,10 @@ export interface TokenPayload {
   providedIn: 'root',
 })
 export default class TokenService {
-  private readonly authApiUrl = '/auth';
-
   private readonly accessTokenKey = 'accessToken';
   private readonly refreshTokenKey = 'refreshToken';
 
   constructor(
-    private http: HttpClient,
     @Inject(PLATFORM_ID) private platformId: object,
   ) {}
 
@@ -55,33 +49,6 @@ export default class TokenService {
     }
   }
 
-  getAccessToken(): string | null {
-    return this.getCookie(this.accessTokenKey);
-  }
-
-  getRefreshToken(): string | null {
-    return this.getCookie(this.refreshTokenKey);
-  }
-
-  setTokens(accessToken: string): void {
-    this.removeTokens();
-    this.setCookie(this.accessTokenKey, accessToken);
-  }
-
-  removeTokens(): void {
-    this.deleteCookie(this.accessTokenKey);
-    this.deleteCookie(this.refreshTokenKey);
-  }
-
-  refreshToken(): Observable<AuthPayload> {
-    const refreshToken = this.getRefreshToken();
-    return this.http.post<AuthPayload>(`${this.authApiUrl}/refresh-token`, { refreshToken: refreshToken }).pipe(
-      tap((response) => {
-        this.setTokens(response.accessToken);
-      }),
-    );
-  }
-
   private decodeToken(token: string): TokenPayload | null {
     try {
       if (token === 'undefined') {
@@ -95,12 +62,34 @@ export default class TokenService {
     }
   }
 
+  getAccessToken(): string | null {
+    return this.getCookie(this.accessTokenKey);
+  }
+
+  setAccessToken(accessToken: string): void {
+    this.setCookie(this.accessTokenKey, accessToken);
+  }
+
+  removeTokens(): void {
+    this.deleteCookie(this.accessTokenKey);
+    this.deleteCookie(this.refreshTokenKey);
+  }
+
   isTokenExpired(): boolean {
     const decodedToken = this.getDecodedAccessToken();
     if (!decodedToken) return true;
     const expirationTime = decodedToken.exp;
     const currentTime = Math.floor(Date.now() / 1000);
     return currentTime >= expirationTime;
+  }
+
+  isTokenAboutToExpire(): boolean {
+    const decodedToken = this.getDecodedAccessToken();
+    if (!decodedToken) return true;
+    const expirationTime = decodedToken.exp;
+    const currentTime = Math.floor(Date.now() / 1000);
+    const minutesToExpire = 5;
+    return currentTime >= expirationTime - minutesToExpire * 60;
   }
 
   getDecodedAccessToken(): TokenPayload | null {
@@ -111,10 +100,11 @@ export default class TokenService {
     const decodedToken = this.getDecodedAccessToken();
 
     if (decodedToken?.accountName && decodedToken?.role !== undefined && !this.isTokenExpired()) {
-      const accountName: string = decodedToken.accountName;
-      const role: Role = Role[decodedToken.role as keyof typeof Role];
+      const accountName = decodedToken.accountName;
+      const role = Role[decodedToken.role as keyof typeof Role];
+      const userId = decodedToken.userId;
 
-      return { accountName, role };
+      return { userId, accountName, role };
     }
 
     return null;
